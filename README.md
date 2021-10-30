@@ -7,9 +7,9 @@ Github : https://github.com/arunsha1983/Nornir3_8021x-_Switch_Configurator
 
 # Nornir 8021x Switch Configurator Use Case
 
-- Each device in device.txt we will gather switchport details with TextFSM and Filter only the access ports
+- Each device in device.txt we will gather switchport details with TextFSM parsing and Filter only the access ports
 - After gathering access ports will generate configuration for each device using jinja2 template
-- Push the generated configuration to each device that is Global and Interface configutions(Only Access Ports)
+- Push the generated DOT1X configuration to each device that is Global and Interface level configurations (Only to Access Ports)
 
 ## Overview of the files
 This script is built around Nornir 3.1 and with various plugins. For ease of use i have used Meheretab Mengistu MyFunction module to get username and password to generate it in the inventory defaults.yaml file.
@@ -61,7 +61,6 @@ There are several options for running this Nornir 8021x Switch Configurator the 
 
 1. Docker installed in Windows or Linux machine
 2. Basic knowledge on Dockers - https://www.youtube.com/watch?v=zJ6WbK9zFpI 
-
 
 **Step 1 - Download the repository**
 
