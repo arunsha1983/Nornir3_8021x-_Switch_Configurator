@@ -41,7 +41,7 @@ def get_access_ports(task):
             task.host['access_ports'].append(dict(interface))
     # Print out all the access ports found for the host to make it more visual
     for access_port in task.host['access_ports']:
-        rprint(f"[green][{task.host.name}][/green] Interface [blue]{access_port['interface']}[/blue] is of type access")
+        rprint(f"[green][{task.host.name}][/green] Interface [red]{access_port['interface']}[/red] is of type access")
 
 
 # It generates the configuration using the jinja2 templates for each host or device. 
