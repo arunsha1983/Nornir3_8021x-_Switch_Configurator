@@ -36,7 +36,7 @@ This script is built around Nornir 3.1 and with various plugins. For ease of use
 
 ## Built With
 Pleae use NORNIR Version 3.1 and Python Version must be at least v3.6.8
-Following Packtes, Modules and Requirements are needed:
+Following Packtes, Modules and Requirements are needed and all other depencies are in the 'requirements.txt'
     
     nornir==3.1.1
     nornir-jinja2==0.2.0
