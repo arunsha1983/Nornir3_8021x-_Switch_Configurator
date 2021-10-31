@@ -112,7 +112,8 @@ You should be ready to run the script now for your devices. To run the script yo
 
 `python3 8021x-switch-config.py`
 
-The script will prompt you for the user's to confirm that they updated the devices.txt file and ask for the username and password to execute the script. See the output result for the script in the image here. ![image](https://user-images.githubusercontent.com/60428178/139592961-c4c8bb37-fd30-431a-be69-ba277be8fb95.png)
+The script will prompt you for the user's to confirm that they updated the devices.txt file and ask for the username and password to execute the script. See the output result for the script in the image here. ![image](https://user-images.githubusercontent.com/60428178/139593524-e94a9403-5528-4d2c-b68e-4b68803ce150.png)
+
 
 Switch Configuration results:
 
