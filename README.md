@@ -3,40 +3,39 @@ Automate 802.1x Cisco Switch Configuration using Nornir Automation Framework
 
 Author: Arun Shankaralingam
 
-Github : https://github.com/arunsha1983/dot1x-Switch-Configurator
-
+Github: https://github.com/arunsha1983/dot1x-Switch-Configurator
 
 # Nornir 8021x Switch Configurator Use Case
 
-- Each device in device.txt we will gather switchport details with TextFSM parsing and Filter only the access ports
-- After gathering access ports will generate configuration for each device using jinja2 template
+- Each device in device.txt we will gather switch port details with TextFSM parsing and Filter only the access ports
+- After gathering access ports will generate a configuration for each device using the jinja2 template
 - Push the generated DOT1X configuration to each device that is Global and Interface level configurations (Only to Access Ports)
 
 ## Overview of the files
-This script is built around Nornir 3.1 and with various plugins. For ease of use i have used Meheretab Mengistu MyFunction module to get username and password to generate it in the inventory defaults.yaml file.
+This script is built around Nornir 3.1 and with various plugins. For ease of use, I have used the Meheretab Mengistu MyFunction module to get a username and password to generate it in the inventory defaults.yaml file.
 
 1. Inventory ==> It contains all the Files needed for the Nornir ######### Do NOT MODIFY #########
     - defaults.yaml   ---> can be left empty, but must be present as a file 
-    - groups.yaml     ---> is used to group your hosts an provide a plattform info (used for authentication)
+    - groups.yaml     ---> is used to group your hosts and provide platform info (used for authentication)
     - hosts.yaml      ---> is used to put in the hosts you want to run the scripts against in yaml format
 2. myfuncs ==> A package of functions written by Meheretab Mengistu to create Nornir Inventory Files automatically based on devices.txt. ######### Do NOT MODIFY #########
     - imp_funct.py ---> Multiple common functions to create a username and password and hosts for the Inventory files easily.
-3. templates ==> This folder contains jinja2 template file used for switch global and interface 802.1x configurations.
-4. 8021x-switch-config.py ==> Python Scipt used for this Nornir 8021x Switch Configurator
+3. templates ==> This folder contains the jinja2 template file used for switch global and interface 802.1x configurations.
+4. 8021x-switch-config.py ==> Python Script created for this Nornir 8021x Switch Configurator
     - generate_defaults_yaml ---> Generate defaults.yaml file with username and password
-    - get_access_ports ---> This task runs the 'show interface switchport' command and makes it machine readable through TextFSM templates.Prints the access ports.
+    - get_access_ports ---> This task runs the 'show interface switch port command and makes it machine-readable through TextFSM templates. Prints the access ports.
     - generate_config ---> It generates the configuration using the jinja2 templates for each host or device.
     - push_config ---> It Pushes the jinja2 templates for each host or device.
     - main --> It is the mail function written to run the above tasks  
-5. config.yaml ==> A configuration file is used to indicate the location of the inventory files as well as the plugin type being utilized for the Nornir
-5. devices.txt ==> This file contians the IP addresses of network equipments you need to SSH.
+5. config.yaml ==> A configuration file is used to indicate the location of the inventory files as well as the plugin type being utilized for the Nornir Initiation
+5. devices.txt ==> This file contains the IP addresses of network switches.
 6. Nornir.log ==> Nornir log File 
-7. requirement.txt ==> It provides all the depencies installed for this script to work
+7. requirement.txt ==> It provides all the dependencies installed for this script to work
  
 
 ## Built With
-Pleae use NORNIR Version 3.1 and Python Version must be at least v3.6.8
-Following Packtes, Modules and Requirements are needed and all other depencies are in the 'requirements.txt'
+Please use NORNIR Version 3.1 and Python Version must be at least v3.6.8
+Following Packets, Modules and Requirements are needed and all other dependencies are in the 'requirements.txt'
     
     nornir==3.1.1
     nornir-jinja2==0.2.0
@@ -45,19 +44,18 @@ Following Packtes, Modules and Requirements are needed and all other depencies a
     ntc-templates==2.3.2
     paramiko==2.8.0
     
-For more informations see ---> https://github.com/nornir-automation/nornir
-
+For more information see ---> https://github.com/nornir-automation/nornir
 
 # Running the Nornir 8021x Switch Configurator
 
 There are several options for running this Nornir 8021x Switch Configurator the preferred option is as below
 
-1. Pull the docker image  and run it in your computer/server docker container. It is best as it will contains all dependencies and work without any issues.
-2. Clone the Github Repository and running the code on a computer/server with Python Virtual Environment. Install requirements.txt then run the python script
+1. Pull the docker image and run it in your computer/server docker container. It is best as it will contain all dependencies and work without any issues.
+2. Clone the Github Repository and run the code on a computer/server with Python Virtual Environment. Install requirements.txt then run the python script
 
-If you are clone the github repositiry to your Python virtual Environment use the `pip3 freeze -r requirements.txt` to install all the dependencies.
+If you are cloning the Github repository to your Python virtual Environment use the `pip3 freeze -r requirements.txt` to install all the dependencies.
 
-Note: As always, **test** your changes to a demo host in a lab environment **before** actually using it in a production environment.
+Note: As always, **test** your changes to a demo host in a lab environment **before** using it in a production environment.
 
 ### Run the Docker
 
@@ -76,9 +74,9 @@ Command will run the docker image dot1x-switch-configurator. It Exposes port 202
 
 `docker run -p 2002:22 dot1x-switch-configurator`
 
-**Step 3 - SSH to your Docker Machine using your favourite tool**
+**Step 3 - SSH to your Docker Machine using your favorite tool**
 
-SSH in to your Docker running machine using port 2022 to login in to the dot1x-switch-configurator use below credentials.
+SSH into your Docker running machine using port 2022 to login into the dot1x-switch-configurator use below credentials.
 
 Username : `test`
 Password : `test`
@@ -95,7 +93,7 @@ See image here ![image](https://user-images.githubusercontent.com/60428178/13959
 
 **Step 5 - Change the jinja2 template to the configuration you want**
 
-Current jinja2 template file located at _templates/8021x_mon.j2_is an example.You can update the file with your configurations or create a new jinja2 file.
+The current jinja2 template file located at _templates/8021x_mon.j2_is an example. You can update the file with your configurations or create a new jinja2 file.
 
 `cd templates/`  --> To get to the tempaltes folder
 `nano 8021x_mon.j2` --> Update the Existing Jinja2 template for Global and Interface configurations
@@ -113,13 +111,11 @@ You should be ready to run the script now for your devices. To run the script yo
 
 `python3 8021x-switch-config.py`
 
-The script will prompt you for the user's to confirm that they updated the devices.txt file and ask for the username and password to execute the script. See the output result for the script in the image here. ![image](https://user-images.githubusercontent.com/60428178/139593524-e94a9403-5528-4d2c-b68e-4b68803ce150.png)
-
+The script will prompt you for the users to confirm that they updated the devices.txt file and ask for the username and password to execute the script. See the output result for the script in the image here. ![image](https://user-images.githubusercontent.com/60428178/139593524-e94a9403-5528-4d2c-b68e-4b68803ce150.png)
 
 Switch Configuration results:
 
 ![image](https://user-images.githubusercontent.com/60428178/139593450-d90584b4-58d8-4300-a58b-3d4cf81ae27d.png)
-
 
 ## Learning
 Nornir Related Learning
@@ -145,4 +141,3 @@ Related solutions on DevNet Ecosystem Exchange:
 [Nornir 3 Filtering Demo](https://developer.cisco.com/codeexchange/github/repo/writememe/nornir-filtering-demo)
 
 [Nornir3_802.1x_configuration](https://github.com/nouse4it/Nornir3_802.1x_configuration)
-
