@@ -114,6 +114,10 @@ You should be ready to run the script now for your devices. To run the script yo
 
 The script will prompt you for the user's to confirm that they updated the devices.txt file and ask for the username and password to execute the script. See the output result for the script in the image here. ![image](https://user-images.githubusercontent.com/60428178/139592961-c4c8bb37-fd30-431a-be69-ba277be8fb95.png)
 
+Switch Configuration results:
+
+![image](https://user-images.githubusercontent.com/60428178/139593450-d90584b4-58d8-4300-a58b-3d4cf81ae27d.png)
+
 
 ## Learning
 Nornir Related Learning
