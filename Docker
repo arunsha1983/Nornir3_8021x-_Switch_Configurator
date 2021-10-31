@@ -1,0 +1,39 @@
+# Use ubuntu Container to build your container for Network automation
+FROM ubuntu:latest
+
+# Install open-ssh server and sudo
+RUN apt update && apt install  openssh-server sudo -y
+
+# Install python3 & python3-pip
+RUN apt install -y python3 python3-pip nano
+
+# Install nano , Git , Net-tools , ping tools
+RUN apt install -y nano git net-tools iputils-ping
+
+# Make a directory for our Python folder
+WORKDIR /nornir
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+# Copy scripts and necessary files to /nornir folder
+COPY . /nornir
+
+# Create a user called test and add it to the sudo group along with Work Directory as Nornir
+RUN useradd -rm -d /nornir -s /bin/bash -g root -G sudo -u 1000 test 
+
+# set the password for test user as test
+RUN  echo 'test:test' | chpasswd
+
+# Assign test user and group as owner of Nornir work Directory
+RUN chown -R test:sudo /nornir
+
+# Start the SSH service
+RUN service ssh start
+
+# Inform Container to listen on this port
+EXPOSE 22
+
+# Run command to start the SSH daemon
+CMD ["/usr/sbin/sshd","-D"]
