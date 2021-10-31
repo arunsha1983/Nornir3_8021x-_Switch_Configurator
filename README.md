@@ -3,7 +3,8 @@ Automate 802.1x Cisco Switch Configuration using Nornir Automation Framework
 
 Author: Arun Shankaralingam
 
-Github : https://github.com/arunsha1983/Nornir3_8021x-_Switch_Configurator
+Github : https://github.com/arunsha1983/dot1x-Switch-Configurator
+
 
 # Nornir 8021x Switch Configurator Use Case
 
@@ -53,7 +54,9 @@ If you are using the code in a Python virtual Environment use the "pip3 freeze -
 There are several options for running this Nornir 8021x Switch Configurator the preferred option is as below
 
 1. Pull the docker image  and run it in your computer/server docker container. It is best as it will contains all dependencies and work without any issues.
-2. Clone the Github Repository and running the code on a computer/server with Python Virtual Environment.
+2. Clone the Github Repository and running the code on a computer/server with Python Virtual Environment. Install requirements.txt then run the python script
+
+Note: As always, **test** your changes to a demo host in a lab environment **before** actually using it in a production environment.
 
 ### Run the Docker
 
@@ -62,85 +65,54 @@ There are several options for running this Nornir 8021x Switch Configurator the 
 1. Docker installed in Windows or Linux machine
 2. Basic knowledge on Dockers - https://www.youtube.com/watch?v=zJ6WbK9zFpI 
 
-**Step 1 - Download the repository**
+**Step 1 - Download the docker image to your machine**
 
-Choose a path of your liking and clone the GitHub repositoy in this path:
-`git clone https://github.com/brammeskens/nornir_config_access_ports.git`
+`docker pull arunsha/dot1x-switch-configurator:latest`
 
-**Step 2 - Create your Python virtual environment**
+**Step 2 - Run the Docker image in your machine**
 
-It's generally cleaner to use Python virtual environments as each virtual environment has its own Python binary and independent packages. So we will create one:
-`python3 -m venv nornir_config_access_ports`
+Command will run the docker image dot1x-switch-configurator. It Exposes port 2022 for outside and uses port 22 inside the container.
 
-**Step 3 - Activate your Python virutal environment**
+`docker run -p 2002:22 dot1x-switch-configurator`
 
-After the creation of the virtual environment, we should activate it so we can actually make use of it:
-```
-cd nornir_config_access_ports
-source bin/activate
-```
+**Step 3 - SSH to your Docker Machine using your favourite tool**
 
-**Step 4 - Install the dependencies**
+SSH in to your Docker running machine using port 2022 to login in to the dot1x-switch-configurator use below credentials.
 
-Let's install the dependencies with the requirements.txt file from the repo:
-`pip3 install -r requirements`
+Username : `test`
+Password : `test`
 
-**Step 5 - Create your Nornir 3 inventory**
+See image here ![image](https://user-images.githubusercontent.com/60428178/139592667-696419f0-dd90-4348-b765-4cce55155a8e.png)
 
-General usage of Nornir is required. Please see [nornir.tech](https://nornir.tech) or [nornir-automation](https://github.com/nornir-automation/nornir/). Example files have already been supplied at the _inventory_ folder. Alter these files to match your environment:
-```
-inventory/defaults.yaml
-inventory/groups.yaml
-inventory/hosts.yaml
-```
+**Step 4 - Update your Device list**
 
-**Step 6 - Filter your Nornir 3 inventory to your liking**
+`nano devices.txt` --> Update your Targeted switch Device IP addresses
+`Ctrl+O` --> To Save the device.txt file
+`Ctrl+X` --> To exit the Nano editor
 
-It's a good idea to start small and not run your script on your whole inventory. That's where Nornir 3's filtering comes into play. In case you would like to filter your hosts based on their parent group, you may want to add the following code after Nornir initialization (line _54_):
-`nr = nr.filter(F(has_parent_group='afg'))`
-For further Nornir 3 filtering examples and practice see [Nornir 3 Filtering Demo](https://developer.cisco.com/codeexchange/github/repo/writememe/nornir-filtering-demo).
+See image here ![image](https://user-images.githubusercontent.com/60428178/139592698-d09136d4-7f14-41eb-a6da-f3c4f6f98ec0.png)
 
-**Step 7 - Change the jinja2 template to the configuration you want**
+**Step 5 - Change the jinja2 template to the configuration you want**
 
-Alter the jinja2 template file located at _templates/8021x_mon.j2_ or create a new jinja2 file to your liking in the folder. In our example _8021x_mon.j2_ file you will find a general part of the configuration we want to send to the host (change it as needed). Next you will find a section to generate the specific configuration to the access ports:
-```
-{% for i in host["access_ports"] %}
-interface {{i['interface']}}
-authentication event fail action next-method
-authentication event server dead action authorize
-authentication event server dead action authorize voice
-authentication event server alive action reinitialize
-authentication host-mode multi-domain
-authentication open
-authentication order dot1x mab
-authentication priority dot1x mab
-authentication port-control auto
-authentication periodic
-authentication timer reauthenticate server
-authentication violation replace
-mab
-dot1x pae authenticator
-dot1x timeout tx-period 8
-spanning-tree portfast
-!
-{% endfor %}
-```
-Your custom access port configuration should be inserted between `interface {{i['interface']}}` and `!`. If your have changed the template's name or are using a new jinja2 template file, alter the name at line _64_ next to _j2template=_:
-`    result_gen_config = nr.run(task = generate_config, j2path= "templates/", j2template = "8021x_mon.j2")`
+Current jinja2 template file located at _templates/8021x_mon.j2_is an example.You can update the file with your configurations or create a new jinja2 file.
 
-**Step 8 - Run the script**
+`cd templates/`  --> To get to the tempaltes folder
+`nano 8021x_mon.j2` --> Update the Existing Jinja2 template for Global and Interface configurations
+`Ctrl+O` --> To Save the 8021x_mon.j2 file
+`Ctrl+X` --> To exit the Nano editor
 
-You should be ready to run the script now. If you feel uncertain about the _push_config_ task, we advise you to comment out lines _68_ and _69_ by inserting _#_ at the beginning of the line before you run the script. To run the script you simply enter:
-`python3 config_access_ports.py`
-The script will prompt you for the user's (defined in _inventory/defaults.yaml_) password and will run the following tasks by default:
-```
-get_access_ports
-generate_config
-push_config
-```
+Your Interface access port configuration should be inserted between `interface {{i['interface']}}` and `!`. If your have changed the template's name or are using a new jinja2 template file, alter the name at line_97_ next to _j2template=_:
+` result_gen_config = nr.run(task = generate_config, j2path= "templates/", j2template = "8021x_mon.j2")`
 
-As always, **test** your changes to a demo host in a lab environment **before** actually using it in a production environment.
+See image here ![image](https://user-images.githubusercontent.com/60428178/139592864-50e4e86f-2a07-4cc0-bd0b-bcb8ba518dbe.png)
 
+**Step 6 - Run the script**
+
+You should be ready to run the script now for your devices. To run the script you simply enter:
+
+`python3 8021x-switch-config.py`
+
+The script will prompt you for the user's to confirm that they updated the devices.txt file and ask for the username and password to execute the script. See the output result for the script in the image here. ![image](https://user-images.githubusercontent.com/60428178/139592961-c4c8bb37-fd30-431a-be69-ba277be8fb95.png)
 
 
 ## Learning
