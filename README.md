@@ -47,7 +47,6 @@ Following Packtes, Modules and Requirements are needed:
     
 For more informations see ---> https://github.com/nornir-automation/nornir
 
-If you are using the code in a Python virtual Environment use the "pip3 freeze -r requirements.txt" to install all the dependencies.
 
 # Running the Nornir 8021x Switch Configurator
 
@@ -55,6 +54,8 @@ There are several options for running this Nornir 8021x Switch Configurator the 
 
 1. Pull the docker image  and run it in your computer/server docker container. It is best as it will contains all dependencies and work without any issues.
 2. Clone the Github Repository and running the code on a computer/server with Python Virtual Environment. Install requirements.txt then run the python script
+
+If you are clone the github repositiry to your Python virtual Environment use the `pip3 freeze -r requirements.txt` to install all the dependencies.
 
 Note: As always, **test** your changes to a demo host in a lab environment **before** actually using it in a production environment.
 
